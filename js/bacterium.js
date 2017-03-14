@@ -14,7 +14,14 @@ class Bacterium {
         var y_offset = CELL_RADIUS;
         var x = x_offset + this.x * x_change + grid_offset;
         var y = y_offset + this.y * y_change + grid_offset;
-        draw_hexagon(x, y, CELL_RADIUS * 0.9, RACES[this.race]);
+
+
+        var lv = get_light_value(this.x, this.y);
+        var clr = Math.floor(lv * 25);
+        var color = "rgb(" + clr + ", " + clr + ", " + clr + ")";
+
+        draw_hexagon(x, y, CELL_RADIUS * 0.9, color);
+        //draw_hexagon(x, y, CELL_RADIUS * 0.9, RACES[this.race]);
     }
 
     get neighbours() {
@@ -57,4 +64,17 @@ function draw_hexagon(x, y, radius, color) {
 
     ctx.fillStyle = color;
     ctx.fill();
+}
+
+function get_light_value(x, y) {
+    var x_centre = Math.floor(CELLS_W / 2);
+    var y_centre = Math.floor(CELLS_H / 2);
+    var max_dist = Math.sqrt(x_centre ** 2 + y_centre ** 2);
+    var cur_dist = Math.sqrt(Math.abs(x - x_centre) ** 2 + 
+                                Math.abs(y - y_centre) ** 2);
+
+    var light_falloff = (MAX_LIGHT_VALUE - MIN_LIGHT_VALUE) / max_dist;
+    var light_value = MAX_LIGHT_VALUE - light_falloff * cur_dist;
+
+    return Math.round(light_value);
 }

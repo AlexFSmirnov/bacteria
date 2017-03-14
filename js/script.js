@@ -5,7 +5,7 @@ function main() {
     draw_field();
     adjust_window();
 
-    setTimeout(main, 1000 / FPS);
+    //setTimeout(main, 1000 / FPS);
 }
 
 function setup() {
